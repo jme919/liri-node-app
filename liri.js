@@ -34,7 +34,9 @@ function mytweets(){
   if (!error && response.statusCode === 200) {
   	for (var j = 0; j < tweets.length; j++){
   		var theTweets = ("Tweet " + (j + 1) + ":" + tweets[j].created_at + " " + tweets[j].text);
+  		console.log("============================================================");
   		console.log(theTweets);
+
   	}
 
     
@@ -51,33 +53,40 @@ if(userCommand === "my-tweets"){
 
 }
 
-console.log("=====================================================================");
+
 //show artist, song name, preview link, and album from spotify//
-if(userCommand === "spotify-this-song"){
+
+var song = userRequest;
+//var defaultSong = "the sign";
+// if(userRequest === ""){
+// 	song = "Everyday";
+    //}else{
+    // 	song = userRequest;
+    // }
+
+   if( userCommand === "spotify-this-song"){
 	spotifyThisSong();
 	 }
-	 // var defaultSong = "the sign";
+	 
 	
-	// if(userRequest === undefined){
-	// userRequest = defaultSong;
- //    }
+	
 
 
 
-function spotifyThisSong(){
-	spotify.search({type: "track", query: userRequest, limit: 1}, function(err, data){
+function spotifyThisSong(userRequest){
+	spotify.search({type: "track", query: song, limit: 1}, function(err, data){
 		console.log(data);
-		if (!err){
+		if (err){
 			return console.log("Error: " + err);
 		}
 
 		for(var i = 0; i < data.tracks.items.length; i++){
-			var song = data.tracks.items[i];
+			var songData = data.tracks.items[i];
 			console.log("=====================================================");
-			console.log("Song: " + song.name);
-			console.log("Artist: " + song.artists[0].name);
-			console.log("Album: " + song.album.name);
-			console.log("Preview Link: " + song.preview_url);
+			console.log("Song: " + songData.name);
+			console.log("Artist: " + songData.artists[0].name);
+			console.log("Album: " + songData.album.name);
+			console.log("Preview Link: " + songData.external_urls.spotify);
 			console.log("====================================================");
 		  }
 		  
@@ -118,6 +127,24 @@ if(userCommand === "movie-this"){
 
 
 //use fs Node package, LIRI will take the text inside random.txt and the use it to call one of the LIRI commands
-//function doWhatItSays(){
+if(userCommand === "do-what-it-says")
+	doIt();
+function doIt(){
+fs.readFile("random.txt", "utf8", function(error, data) {
 
-//}
+  // If the code experiences any errors it will log the error to the console.
+  if (error) {
+    return console.log(error);
+  }
+
+  // We will then print the contents of data
+  console.log(data);
+
+  // Then split it by commas (to make it more readable)
+  var song = data.split(",")[1];
+
+  // We will then re-display the content as an array for later use.
+  spotifyThisSong(song);
+
+});
+}
