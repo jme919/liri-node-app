@@ -51,24 +51,25 @@ if(userCommand === "my-tweets"){
 
 }
 
-console.log("it reached here");
+console.log("=====================");
 
-
-//show artist, song name, preview link, and album from spotify//
-function spotifyThisSong(){
-	var defaultSong = "the sign";
-
-if(userCommand === "spotifyThisSong"){
+if(userCommand === "spotify-this-song"){
 	spotifyThisSong();
 	 }
 
-if(userRequest ===undefinded){
+
+//show artist, song name, preview link, and album from spotify//
+function spotifyThisSong(userRequest){
+	
+	var defaultSong = "the sign";
+	
+	if(userRequest === undefined){
 	userRequest = defaultSong;
-}
+    }
 
 	spotify.search({type: "track", query: userRequest, limit: 1}).then(function(response, err){
 		console.log(response);
-		for(var i = 0; i < data.tracks.items.length; i++){
+		for(var i = 0; i < response.tracks.items.length; i++){
 		if (!err){
 			console.log("Song: " + response.tracks.items[i].name);
 			console.log("Artist: " + response.track.items[i].artists[0].name);
@@ -90,12 +91,12 @@ if(userRequest ===undefinded){
 
 
 //Show movie title, year, IMDB rating, Rotten Tom rating, country, language, plot, actors//
-function movieThis(){
+//function movieThis(){
 
-}
+//}
 
 
 //use fs Node package, LIRI will take the text inside random.txt and the use it to call one of the LIRI commands
-function doWhatItSays(){
+//function doWhatItSays(){
 
-}
+//}
