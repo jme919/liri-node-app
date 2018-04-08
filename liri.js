@@ -65,8 +65,12 @@ if(userCommand === "spotify-this-song"){
 
 
 function spotifyThisSong(){
-	spotify.search({type: "track", query: userRequest}function(err, data){
+	spotify.search({type: "track", query: userRequest, limit: 1}, function(err, data){
+		console.log(data);
 		if (!err){
+			return console.log("Error: " + err);
+		}
+
 		for(var i = 0; i < data.tracks.items.length; i++){
 			var song = data.tracks.items[i];
 			console.log("=====================================================");
@@ -77,13 +81,11 @@ function spotifyThisSong(){
 			console.log("====================================================");
 		  }
 		  
-		}
+		});
 	
-       });
+       }
 	
 	
-	
-};
 
 
 
@@ -100,9 +102,17 @@ function movieThis(){
 			console.log("IMDB Rating: " + JSON.parse(body).Year);
 			console.log("Rotten Tomatoe Rating: " + JSON.parse(body).Ratings[1].Value);
 			console.log("Produced In: " + JSON.parse(body).Country);
-			console.log
+			console.log("Language: " + JSON.parse(body).Language);
+			console.log("Actors: " + JSON.parse(body).Actors);
+			console.log("Plot: " + JSON.parse(body).Plot);
+			console.log("=======================================================");
 		}
-	})
+	});
+
+}
+
+if(userCommand === "movie-this"){
+	movieThis();
 
 }
 
