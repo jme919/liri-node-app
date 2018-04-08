@@ -51,49 +51,60 @@ if(userCommand === "my-tweets"){
 
 }
 
-console.log("=====================");
-
+console.log("=====================================================================");
+//show artist, song name, preview link, and album from spotify//
 if(userCommand === "spotify-this-song"){
 	spotifyThisSong();
 	 }
-
-
-//show artist, song name, preview link, and album from spotify//
-function spotifyThisSong(userRequest){
+	 // var defaultSong = "the sign";
 	
-	var defaultSong = "the sign";
-	
-	if(userRequest === undefined){
-	userRequest = defaultSong;
-    }
+	// if(userRequest === undefined){
+	// userRequest = defaultSong;
+ //    }
 
-	spotify.search({type: "track", query: userRequest, limit: 1}).then(function(response, err){
-		console.log(response);
-		for(var i = 0; i < response.tracks.items.length; i++){
+
+
+function spotifyThisSong(){
+	spotify.search({type: "track", query: userRequest}function(err, data){
 		if (!err){
-			console.log("Song: " + response.tracks.items[i].name);
-			console.log("Artist: " + response.track.items[i].artists[0].name);
-			console.log("Album: " + response.tracks.items[i].album.name);
-			console.log("Preview Link: " + response.tracks.items[i].preview_url);
+		for(var i = 0; i < data.tracks.items.length; i++){
+			var song = data.tracks.items[i];
+			console.log("=====================================================");
+			console.log("Song: " + song.name);
+			console.log("Artist: " + song.artists[0].name);
+			console.log("Album: " + song.album.name);
+			console.log("Preview Link: " + song.preview_url);
+			console.log("====================================================");
 		  }
 		  
 		}
-	}).catch(function(err) {
-            console.log(err);
-		
+	
        });
 	
 	
 	
-}
+};
 
 
 
 
 //Show movie title, year, IMDB rating, Rotten Tom rating, country, language, plot, actors//
-//function movieThis(){
+function movieThis(){
 
-//}
+	var queryMov = "http://www.omdbapi.com/?t=" + userRequest + "&y=&plot=short&apikey=trilogy";
+
+	request(queryMov, function(error, response, body){
+		if(!error && response.statusCode === 200) {
+			console.log("======================================================");
+			console.log("Title: " + JSON.parse(body).Title);
+			console.log("IMDB Rating: " + JSON.parse(body).Year);
+			console.log("Rotten Tomatoe Rating: " + JSON.parse(body).Ratings[1].Value);
+			console.log("Produced In: " + JSON.parse(body).Country);
+			console.log
+		}
+	})
+
+}
 
 
 //use fs Node package, LIRI will take the text inside random.txt and the use it to call one of the LIRI commands
