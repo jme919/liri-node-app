@@ -1,13 +1,27 @@
 require("dotenv").config();
 var request = require("request");
 var myKeys = require("./keys.js");
+var twitter = require("twitter");
+var spotify = require("node-spotify-api");
+var fs = require("fs");
 
+
+
+
+
+
+//access my api keys//
 var spotify = new Spotify(myKeys.spotify);
 var client = new Twitter(myKeys.twitter);
+
+//variable for users input//
+var userRequest = process.argv[2];
 
 
 
 //show last 20 tweets//
+
+
 function mytweets(){
   request("https://api.twitter.com/1.1/statuses/user_timeline.json?Tunammez=" + client + "&count=20", function(error, response, body) {
 
@@ -22,7 +36,7 @@ function mytweets(){
 
 };
 
-if(procees.argv[3] === "my-tweets"){
+if(userRequest === "my-tweets"){
 	mytweets();
 
 }
