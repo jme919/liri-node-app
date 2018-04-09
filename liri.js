@@ -63,7 +63,7 @@ if(!userRequest){
 }
 
    if( userCommand === "spotify-this-song"){
-	spotifyThisSong();
+	spotifyThisSong(song);
 	 }
 	 
 	
@@ -71,7 +71,7 @@ if(!userRequest){
 
 
 
-function spotifyThisSong(userRequest){
+function spotifyThisSong(song){
 	spotify.search({type: "track", query: song, limit: 1}, function(err, data){
 		//console.log(data);
 		if (err){
@@ -99,9 +99,9 @@ function spotifyThisSong(userRequest){
 
 //Show movie title, year, IMDB rating, Rotten Tom rating, country, language, plot, actors//
 var movie = userRequest;
-var defaultMovie = "Mr Nobody";
+var defaultMovie = "mr nobody";
 if(!userRequest){
-	moveie = defaultMovie;
+	movie = defaultMovie;
 }
 if(userCommand === "movie-this"){
 	movieThis();
