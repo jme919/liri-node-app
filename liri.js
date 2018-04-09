@@ -16,7 +16,7 @@ var client = new Twitter(myKeys.twitter);
 
 //variable for users input//
 var userCommand = process.argv[2];
-var userRequest = process.argv[3];
+var userRequest = process.argv.slice(3).join(" ");
 
 
 
@@ -57,12 +57,10 @@ if(userCommand === "my-tweets"){
 //show artist, song name, preview link, and album from spotify//
 
 var song = userRequest;
-//var defaultSong = "the sign";
-// if(userRequest === ""){
-// 	song = "Everyday";
-    //}else{
-    // 	song = userRequest;
-    // }
+var defaultSong = " ace of base the sign";
+if(!userRequest){
+	song = defaultSong;
+}
 
    if( userCommand === "spotify-this-song"){
 	spotifyThisSong();
@@ -75,7 +73,7 @@ var song = userRequest;
 
 function spotifyThisSong(userRequest){
 	spotify.search({type: "track", query: song, limit: 1}, function(err, data){
-		console.log(data);
+		//console.log(data);
 		if (err){
 			return console.log("Error: " + err);
 		}
@@ -87,7 +85,7 @@ function spotifyThisSong(userRequest){
 			console.log("Artist: " + songData.artists[0].name);
 			console.log("Album: " + songData.album.name);
 			console.log("Preview Link: " + songData.external_urls.spotify);
-			console.log("====================================================");
+			console.log("=====================================================");
 		  }
 		  
 		});
@@ -100,9 +98,18 @@ function spotifyThisSong(userRequest){
 
 
 //Show movie title, year, IMDB rating, Rotten Tom rating, country, language, plot, actors//
+var movie = userRequest;
+var defaultMovie = "Mr Nobody";
+if(!userRequest){
+	moveie = defaultMovie;
+}
+if(userCommand === "movie-this"){
+	movieThis();
+
+}
 function movieThis(){
 
-	var queryMov = "http://www.omdbapi.com/?t=" + userRequest + "&y=&plot=short&apikey=trilogy";
+	var queryMov = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
 
 	request(queryMov, function(error, response, body){
 		if(!error && response.statusCode === 200) {
@@ -120,10 +127,9 @@ function movieThis(){
 
 }
 
-if(userCommand === "movie-this"){
-	movieThis();
 
-}
+
+
 
 
 //use fs Node package, LIRI will take the text inside random.txt and the use it to call one of the LIRI commands
@@ -140,10 +146,10 @@ fs.readFile("random.txt", "utf8", function(error, data) {
   // We will then print the contents of data
   console.log(data);
 
-  // Then split it by commas (to make it more readable)
+  // Then split it by commas 
   var song = data.split(",")[1];
 
-  // We will then re-display the content as an array for later use.
+  //run the spotify function
   spotifyThisSong(song);
 
 });
