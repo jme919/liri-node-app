@@ -8,8 +8,6 @@ var fs = require("fs");
 
 
 
-
-
 //access my api keys//
 var spotify = new Spotify(myKeys.spotify);
 var client = new Twitter(myKeys.twitter);
@@ -23,33 +21,33 @@ var userRequest = process.argv.slice(3).join(" ");
 //show last 20 tweets//
 
 
-function mytweets(){
-  var param = {
-  	screen_name: "tunammez",
-  	count: 20
-  };
-  client.get("statuses/user_timeline", param, function(error, tweets, response){
+function mytweets() {
+    var param = {
+        screen_name: "tunammez",
+        count: 20
+    };
+    client.get("statuses/user_timeline", param, function(error, tweets, response) {
 
-  // If the request was successful...
-  if (!error && response.statusCode === 200) {
-  	for (var j = 0; j < tweets.length; j++){
-  		var theTweets = ("Tweet " + (j + 1) + ":" + tweets[j].created_at + " " + tweets[j].text);
-  		console.log("============================================================");
-  		console.log(theTweets);
+        // If the request was successful...
+        if (!error && response.statusCode === 200) {
+            for (var j = 0; j < tweets.length; j++) {
+                var theTweets = ("Tweet " + (j + 1) + ":" + tweets[j].created_at + " " + tweets[j].text);
+                console.log("============================================================");
+                console.log(theTweets);
 
-  	}
+            }
 
-    
-  }
-  if(error) throw error;
 
-});
+        }
+        if (error) throw error;
+
+    });
 
 
 }
 
-if(userCommand === "my-tweets"){
-	mytweets();
+if (userCommand === "my-tweets") {
+    mytweets();
 
 }
 
@@ -58,41 +56,41 @@ if(userCommand === "my-tweets"){
 
 var song = userRequest;
 var defaultSong = " ace of base the sign";
-if(!userRequest){
-	song = defaultSong;
+if (!userRequest) {
+    song = defaultSong;
 }
 
-   if( userCommand === "spotify-this-song"){
-	spotifyThisSong(song);
-	 }
-	 
-	
-	
+if (userCommand === "spotify-this-song") {
+    spotifyThisSong(song);
+}
 
 
 
-function spotifyThisSong(song){
-	spotify.search({type: "track", query: song, limit: 1}, function(err, data){
-		//console.log(data);
-		if (err){
-			return console.log("Error: " + err);
-		}
 
-		for(var i = 0; i < data.tracks.items.length; i++){
-			var songData = data.tracks.items[i];
-			console.log("=====================================================");
-			console.log("Song: " + songData.name);
-			console.log("Artist: " + songData.artists[0].name);
-			console.log("Album: " + songData.album.name);
-			console.log("Preview Link: " + songData.external_urls.spotify);
-			console.log("=====================================================");
-		  }
-		  
-		});
-	
-       }
-	
-	
+function spotifyThisSong(song) {
+    spotify.search({
+        type: "track",
+        query: song,
+        limit: 1
+    }, function(err, data) {
+        //console.log(data);
+        if (err) {
+            return console.log("Error: " + err);
+        }
+
+        for (var i = 0; i < data.tracks.items.length; i++) {
+            var songData = data.tracks.items[i];
+            console.log("=====================================================");
+            console.log("Song: " + songData.name);
+            console.log("Artist: " + songData.artists[0].name);
+            console.log("Album: " + songData.album.name);
+            console.log("Preview Link: " + songData.external_urls.spotify);
+            console.log("=====================================================");
+        }
+
+    });
+
+}
 
 
 
@@ -100,57 +98,57 @@ function spotifyThisSong(song){
 //Show movie title, year, IMDB rating, Rotten Tom rating, country, language, plot, actors//
 var movie = userRequest;
 var defaultMovie = "mr nobody";
-if(!userRequest){
-	movie = defaultMovie;
+if (!userRequest) {
+    movie = defaultMovie;
 }
-if(userCommand === "movie-this"){
-	movieThis();
-
-}
-function movieThis(){
-
-	var queryMov = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
-
-	request(queryMov, function(error, response, body){
-		if(!error && response.statusCode === 200) {
-			console.log("======================================================");
-			console.log("Title: " + JSON.parse(body).Title);
-			console.log("IMDB Rating: " + JSON.parse(body).Year);
-			console.log("Rotten Tomatoe Rating: " + JSON.parse(body).Ratings[1].Value);
-			console.log("Produced In: " + JSON.parse(body).Country);
-			console.log("Language: " + JSON.parse(body).Language);
-			console.log("Actors: " + JSON.parse(body).Actors);
-			console.log("Plot: " + JSON.parse(body).Plot);
-			console.log("=======================================================");
-		}
-	});
+if (userCommand === "movie-this") {
+    movieThis();
 
 }
 
+function movieThis() {
 
+    var queryMov = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+
+    request(queryMov, function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log("======================================================");
+            console.log("Title: " + JSON.parse(body).Title);
+            console.log("IMDB Rating: " + JSON.parse(body).Year);
+            console.log("Rotten Tomatoe Rating: " + JSON.parse(body).Ratings[1].Value);
+            console.log("Produced In: " + JSON.parse(body).Country);
+            console.log("Language: " + JSON.parse(body).Language);
+            console.log("Actors: " + JSON.parse(body).Actors);
+            console.log("Plot: " + JSON.parse(body).Plot);
+            console.log("=======================================================");
+        }
+    });
+
+}
 
 
 
 
 //use fs Node package, LIRI will take the text inside random.txt and the use it to call one of the LIRI commands
-if(userCommand === "do-what-it-says")
-	doIt();
-function doIt(){
-fs.readFile("random.txt", "utf8", function(error, data) {
+if (userCommand === "do-what-it-says")
+    doIt();
 
-  // If the code experiences any errors it will log the error to the console.
-  if (error) {
-    return console.log(error);
-  }
+function doIt() {
+    fs.readFile("random.txt", "utf8", function(error, data) {
 
-  // We will then print the contents of data
-  console.log(data);
+        // If the code experiences any errors it will log the error to the console.
+        if (error) {
+            return console.log(error);
+        }
 
-  // Then split it by commas 
-  var song = data.split(",")[1];
+        // We will then print the contents of data
+        console.log(data);
 
-  //run the spotify function
-  spotifyThisSong(song);
+        // Then split it by commas 
+        var song = data.split(",")[1];
 
-});
+        //run the spotify function
+        spotifyThisSong(song);
+
+    });
 }
